@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link  href="/js/bootstrap3/css/bootstrap.css" rel="stylesheet">
+    <link  href="/js/bootstrap3/css/bootstrap-theme.css" rel="stylesheet">
+    <link  href="/js/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="/js/DataTables/DataTables-1.10.18/css/dataTables.bootstrap.css">
+    <link  href="/js/fileinput5/css/fileinput.css" rel="stylesheet">
+    <link  href="/js/bootstrap-validator/css/bootstrapValidator.css" rel="stylesheet">
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap3/js/bootstrap.js"></script>
+    <script src="/js/DataTables/DataTables-1.10.18/js/jquery.dataTables.js"></script>
+    <script src="/js/DataTables/DataTables-1.10.18/js/dataTables.bootstrap.js"></script>
+    <script src="/js/bootstrap-datetimepicker/js/moment-with-locales.js"></script>
+    <script src="/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/js/bootbox/bootbox.min.js"></script>
+    <script src="/js/fileinput5/js/fileinput.js"></script>
+    <script src="/js/fileinput5/js/locales/zh-TW.js"></script>
+    <script src="/js/bootstrap-validator/js/bootstrapValidator.js"></script>
+</head>
+<script type="text/html" id="showAddDiv">
+    <div  >
+        <form class="form-horizontal" id="formApp" enctype="multipart/form-data" method="post">
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">房间号</label>
+                <div class="col-sm-4">
+                    <input type="text" name="id" class="form-control"  >
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">级别</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="level"  id="level">
+                        <option value="-1">==请选择==</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">窗类型</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="window"  id="window" >
+                        <option value="-1">==请选择==</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" >
+                <label  class="col-sm-2 control-label">床类型</label>
+                <div class="col-sm-4">
+                    <select class="form-control"  id="bedtype" name="bed">
+                        <option value="-1">==请选择==</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">面积</label>
+                    <div class="col-sm-4">
+                        <select class="form-control"  id="area" name="area">
+                            <option value="-1">==请选择==</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">描述</label>
+                <div class="col-sm-4" id="describes">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">房间设施</label>
+                <div class="col-sm-4" id="facility">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">标题</label>
+                <div class="col-sm-4" id="local">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">价格</label>
+                <div class="col-sm-4">
+                    <input type="text"  name="price" class="form-control " >
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 100px">
+                <label  class="col-sm-2 control-label">上传封面</label>
+                <div class="col-sm-5" style="height:300px">
+                    <input id="input-id" name="file" multiple type="file" data-show-caption="true">
+                    <input type="hidden" name="images" id="add_filePath">
+                </div>
+            </div>
+
+        </form>
+    </div>
+</script>
+<script type="text/html" id="showUpdateDiv">
+    <div  >
+        <form class="form-horizontal" id="formUpdate" enctype="multipart/form-data">
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">房间号</label>
+                <div class="col-sm-4">
+                    <input type="text" name="id" id="id" class="form-control"  >
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">级别</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="level"  id="update_level">
+                        <option value="-1">==请选择==</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">窗类型</label>
+                <div class="col-sm-4">
+                    <select class="form-control" name="window"  id="update_window" >
+                        <option value="-1">==请选择==</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">床类型</label>
+                <div class="col-sm-4">
+                    <select class="form-control"  id="update_bedtype" name="bed">
+                        <option value="-1">==请选择==</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">面积</label>
+                <div class="col-sm-4">
+                    <select class="form-control"  id="update_area" name="area">
+                        <option value="-1">==请选择==</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">描述</label>
+                <div class="col-sm-4" id="update_describes">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">房间设施</label>
+                <div class="col-sm-4" id="update_facility">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">标题</label>
+                <div class="col-sm-4" id="update_local">
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label  class="col-sm-2 control-label">价格</label>
+                <div class="col-sm-4">
+                    <input type="text" id="update_price"  name="price" class="form-control " >
+                </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 100px">
+                <label  class="col-sm-2 control-label">商品图片</label>
+                <div class="col-sm-8" style="height:300px">
+                    <input id="update_input" name="file" multiple type="file" data-show-caption="true">
+                    <input type="hidden" name="images" id="update_filePath">
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
+<body>
+<center><h1>房间管理</h1></center>
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-2" id="divhtml">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                <a href="http://192.168.12.78:8081/list.html">
+                                    会员管理
+                                </a>
+                            </a>
+                        </h4>
+                    </div>
+
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <a href="http://192.168.12.74:8081/room-list.html">
+                                    房间管理
+                                </a>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="heading3">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                <a href="http://192.168.12.70:8080/list.html">
+                                    设施管理
+                                </a>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="heading4">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                <a href="http://192.168.12.69:8080/roomType.html">
+                                    房型管理
+                                </a>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading" role="tab" id="heading5">
+                        <h4 class="panel-title">
+                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                <a href="http://192.168.12.69:8080/bedType.html">
+                                    床型管理
+                                </a>
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-10">
+            <div class="panel panel-primary" >
+                <div class="panel-heading" style="text-align: left">
+                    <button type="button" class="btn btn-success" onclick="showAddRoom()"><i class="glyphicon glyphicon-plus"></i>增加房间</button>
+                </div>
+                <div  class="panel-body">
+                    <div style="margin-left: 50px; margin-bottom: 30px">
+                        <div class="form-group">
+
+                        </div>
+                    </div>
+                    <!-- Table -->
+                    <table class="table" id="datatable_xs">
+                        <thead>
+                        <tr>
+                            <th>房间号</th>
+                            <th>级别</th>
+                            <th>窗类型</th>
+                            <th>床类型</th>
+                            <th>面积</th>
+                            <th>描述</th>
+                            <th>房间设施</th>
+                            <th>标签</th>
+                            <th>价格</th>
+                            <th>封面</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+
+    var imgUrl="http://192.168.12.77:8089/upload/";
+    $(function () {
+        initTable();
+    })
+    function initTable(){
+        $('#datatable_xs').DataTable({
+            "ordering": false, // 禁止排序
+            "processing": true,//数据加载时显示进度都没条
+            "searching": false,//启用搜索功能
+            "serverSide": true,//启用服务端分页（这是使用Ajax服务端的必须配置）
+            "ajax":{
+                "url":"http://192.168.12.74:8001/room/queryList",
+                "error": function (xhr, error, thrown){
+                    console.error(error);
+                },
+                "data": function ( d ) {
+
+                },
+                "dataSrc": function (json) {
+                    if(json.status==200){
+                        json.draw = json.data.draw;
+                        json.recordsTotal = json.data.recordsTotal;
+                        json.recordsFiltered = json.data.recordsFiltered;
+                        json.data=json.data.data
+                        return json.data;
+                    } else {
+                        return "";
+                    }
+                },
+            },
+
+            "columns": [
+                {data: "id"},
+                {data: "roomTypeName"},
+                {data:"windowName"},
+                {data: "bebName"},
+                {data: "areaName"},
+                {data: "describeName"},
+                {data: "facilityName"},
+                {data: "localName"},
+                {data: "price"},
+                {data: "images",
+                    render:function (data,type,row,meta) {
+                        return "<img src='"+imgUrl+data+"' width='50px' >";
+                    }},
+                {data: "id" , render: function (data, type, row, meta) {
+                        return '<div  class="btn-group" role="group" aria-label="...">\n' +
+                            '                            <button type="button" onclick="toUpdateRoom('+data+')" class="btn btn-info"><i class="glyphicon glyphicon-wrench"></i>修改</button>\n' +
+                            '                            <button type="button" onclick="deleteRoom('+data+')" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i>删除</button>\n' +
+                            '                            <button type="button" onclick="addCart('+data+')" class="btn btn-primary"><i class="glyphicon glyphicon-shopping-cart"></i>订购</button>\n' +
+                            '                        </div>';
+                    }}
+            ],
+            language: {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                },
+            },
+        });
+    }
+    function showAddRoom(){
+        bootbox.dialog({
+            message: $("#showAddDiv").html(),
+            title: "添加",
+            size:"large",
+            buttons: {
+                Cancel: {
+                    label: "取消",
+                    className: "btn-default",
+                    callback: function () {
+
+                    }
+                }
+                , OK: {
+                    label: "确认",
+                    className: "btn-danger",
+                    callback: function () {
+
+                            $.post(
+                                "http://192.168.12.74:8001/room/addRoom",
+                                $("#formApp").serialize(),
+                                function (data) {
+                                    if(data.status==200){
+                                        bootbox.alert("增加成功")
+                                        $("#datatable_xs").dataTable().fnDraw(false);
+                                    }else{
+                                        bootbox.alert("操作失败！,请联系管理员",function(){
+                                        })
+                                    }
+                                }
+                            )
+
+                    }
+                }
+            }
+        });
+        //查询级别
+        addLevel();
+        //查询窗类型
+        addWindow();
+        //查询床类型
+        addBed();
+        //查询房间面积
+        addArea();
+        //查询描述
+        addDescribe();
+        //查询房间设施
+        addFacility();
+        //查询标题
+        addLocal();
+        //封面图片
+        initAddFileInput();
+    }
+    function initAddFileInput() {
+        $("#input-id").fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: "http://192.168.12.77:8888/ftp/uploadFTP", //上传的地址
+            allowedFileExtensions: ['jpg', 'gif', 'png','exe'],//接收的文件后缀
+            //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
+            uploadAsync: true, //默认异步上传
+            showUpload: true, //是否显示上传按钮
+            showRemove : true, //显示移除按钮
+            showPreview : true, //是否显示预览
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            //dropZoneEnabled: true,//是否显示拖拽区域
+            //minImageWidth: 50, //图片的最小宽度
+            //minImageHeight: 50,//图片的最小高度
+            //maxImageWidth: 10,//图片的最大宽度
+            //maxImageHeight: 10,//图片的最大高度
+            //maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+            //minFileCount: 0,
+            maxFileCount: 10, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-cloud'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            layoutTemplates :{
+                //actionDelete:'', //去除上传预览的缩略图中的删除图标
+                //actionUpload:'',//去除上传预览缩略图中的上传图片；
+                //actionZoom:''   //去除上传预览缩略图中的查看详情预览的缩略图标。
+            }
+        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功
+            if(data.response.status == 200){
+                $("#add_filePath").val(data.response.data.filePath);
+            }
+        })
+    }
+    function  addLevel() {
+        $.post(
+            "http://192.168.12.74:8001/room/getLevelList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#level").append(
+                            '<option value="'+data[i].roomTypeId+'">'+data[i].roomTypeName+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+
+    }
+    function  addWindow() {
+        $.post(
+            "http://192.168.12.74:8001/room/getWindowlList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#window").append(
+                            '<option value="'+data[i].id+'">'+data[i].windowName+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+
+    }
+    function  addBed() {
+        $.post(
+            "http://192.168.12.74:8001/room/getBedlList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#bedtype").append(
+                            '<option value="'+data[i].id+'">'+data[i].bedType+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  addArea() {
+        $.post(
+            "http://192.168.12.74:8001/room/getArealList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#area").append(
+                            '<option value="'+data[i].id+'">'+data[i].areaName+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  addDescribe() {
+        $.post(
+            "http://192.168.12.74:8001/room/getDescribelList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#describes").append(
+                            '<input type="checkbox" name="describes" value="'+data[i].id+'">'+data[i].describeName
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  addFacility() {
+        $.post(
+            "http://192.168.12.74:8001/room/getFacilitylList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#facility").append(
+                            '<input type="checkbox" name="facilities" value="'+data[i].id+'">'+data[i].facilityName
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  addLocal() {
+        $.post(
+            "http://192.168.12.74:8001/room/getLocallList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#local").append(
+                            '<input type="checkbox" name="hotellocal" value="'+data[i].id+'">'+data[i].localName
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  updateLevel() {
+        $.post(
+            "http://192.168.12.74:8001/room/getLevelList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#update_level").append(
+                            '<option value="'+data[i].roomTypeId+'">'+data[i].roomTypeName+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+
+    }
+    function  updateWindow() {
+        $.post(
+            "http://192.168.12.74:8001/room/getWindowlList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#update_window").append(
+                            '<option value="'+data[i].id+'">'+data[i].windowName+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+
+    }
+    function  updateBed() {
+        $.post(
+            "http://192.168.12.74:8001/room/getBedlList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#update_bedtype").append(
+                            '<option value="'+data[i].id+'">'+data[i].bedType+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  updateArea() {
+        $.post(
+            "http://192.168.12.74:8001/room/getArealList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#update_area").append(
+                            '<option value="'+data[i].id+'">'+data[i].areaName+'</option>'
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  updateDescribe() {
+        $.post(
+            "http://192.168.12.74:8001/room/getDescribelList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#update_describes").append(
+                            '<input type="checkbox" name="describes" value="'+data[i].id+'">'+data[i].describeName
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  updateFacility() {
+        $.post(
+            "http://192.168.12.74:8001/room/getFacilitylList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#update_facility").append(
+                            '<input type="checkbox" name="facilities" value="'+data[i].id+'">'+data[i].facilityName
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function  updateLocal() {
+        $.post(
+            "http://192.168.12.74:8001/room/getLocallList",
+            function(data){
+                if(data.status==200){
+                    var data=data.data;
+                    for (var i = 0; i < data.length; i++) {
+                        $("#update_local").append(
+                            '<input type="checkbox" name="hotellocal" value="'+data[i].id+'">'+data[i].localName
+                        )
+                    }
+                }
+            }
+        )
+    }
+    function toUpdateRoom(id){
+        bootbox.dialog({
+            message: $("#showUpdateDiv").html(),
+            title: "修改",
+            buttons: {
+                Cancel: {
+                    label: "取消",
+                    className: "btn-default",
+                    callback: function () {
+
+                    }
+                }
+                , OK: {
+                    label: "确认",
+                    className: "btn-danger",
+                    callback: function () {
+                        $.post(
+                            "http://192.168.12.74:8001/room/updateRoom",
+                            $("#formUpdate").serialize(),
+                            function (data) {
+                                if(data.status==200){
+                                    bootbox.alert("修改成功")
+                                    $("#datatable_xs").dataTable().fnDraw(false);
+                                }else{
+                                    bootbox.alert("操作失败！,请联系管理员",function(){
+
+                                    })
+                                }
+
+                            }
+                        )
+                    }
+                }
+            }
+        });
+        //查询级别
+        updateLevel();
+        //查询窗类型
+        updateWindow();
+        //查询床类型
+        updateBed();
+        //查询房间面积
+        updateArea();
+        //查询描述
+        updateDescribe();
+        //查询房间设施
+        updateFacility();
+        //查询标题
+        updateLocal();
+        $.post(
+            "http://192.168.12.74:8001/room/toUpdateRoom",
+            {"id":id},
+            function (result) {
+                if(result.status==200){
+                    var data=result.data;
+                    $("#id").val(data.id);
+                    $("#update_level").val(data.level);
+                    $("#update_window").val(data.window);
+                    $("#update_bedtype").val(data.bed);
+                    $("#update_area").val(data.area);
+                    var boxObj = $("input:checkbox[name='describes']");
+                    for(i=0;i<boxObj.length;i++){
+                        if(boxObj[i].value == data.describes)  //如果值与修改前的值相等
+                        {
+                            boxObj[i].checked= true;
+                            break;
+                        }
+                    }
+
+                    var facilities = $("input:checkbox[name='facilities']");
+                    for(i=0;i<facilities.length;i++){
+                        if(facilities[i].value == data.facilities)  //如果值与修改前的值相等
+                        {
+                            facilities[i].checked= true;
+                            break;
+                        }
+                    }
+
+                    var hotellocal = $("input:checkbox[name='hotellocal']");
+                    for(i=0;i<hotellocal.length;i++){
+                        if(hotellocal[i].value == data.hotellocal)  //如果值与修改前的值相等
+                        {
+                            hotellocal[i].checked= true;
+                            break;
+                        }
+                    }
+                    $("#update_price").val(data.price);
+                    $("#update_filePath").val(data.images);
+                    initUpdateFileInput()
+
+                }
+            }
+        )
+    }
+    function initUpdateFileInput() {
+        var filePath = $("#update_filePath").val();
+        $("#update_input").fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: "http://192.168.12.77:8888/ftp/uploadFTP", //上传的地址
+            allowedFileExtensions: ['jpg', 'gif', 'png','exe'],//接收的文件后缀
+            //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
+            uploadAsync: true, //默认异步上传
+            showUpload: true, //是否显示上传按钮
+            showRemove : true, //显示移除按钮
+            showPreview : true, //是否显示预览
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            //dropZoneEnabled: true,//是否显示拖拽区域
+            //minImageWidth: 50, //图片的最小宽度
+            //minImageHeight: 50,//图片的最小高度
+            //maxImageWidth: 1000,//图片的最大宽度
+            //maxImageHeight: 1000,//图片的最大高度
+            //maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+            //minFileCount: 0,
+            maxFileCount: 10, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-cloud'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            layoutTemplates :{
+                //actionDelete:'', //去除上传预览的缩略图中的删除图标
+                //actionUpload:'',//去除上传预览缩略图中的上传图片；
+                //actionZoom:''   //去除上传预览缩略图中的查看详情预览的缩略图标。
+            },
+            initialPreview: [
+                "<img src='"+imgUrl+filePath+"' width='200px' class='file-preview-image' alt='Desert' title='Desert'>",
+            ],
+        }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件上传成功
+
+            if(data.response.status == 200){
+                $("#update_filePath").val(data.response.data.filePath);
+            }
+        })
+    }
+    function deleteRoom(id){
+        bootbox.dialog({
+            message: "确认删除",
+            title: "提示信息",
+            buttons: {
+                Cancel: {
+                    label: "取消",
+                    className: "btn-default",
+                    callback: function () {
+
+                    }
+                }
+                , OK: {
+                    label: "确认",
+                    className: "btn-danger",
+                    callback: function () {
+                        $.post(
+                            "http://192.168.12.74:8001/room/deleteRoom",
+                            {"id":id},
+                            function(data){
+                                if(data.status==200){
+                                    bootbox.alert("删除成功")
+                                    $("#datatable_xs").dataTable().fnDraw(false);
+                                }else{
+                                    bootbox.alert("系统异常，请联系管理员！", function () {
+
+                                    })
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        });
+    }
+</script>
+</html>

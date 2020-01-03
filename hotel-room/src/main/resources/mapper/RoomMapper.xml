@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fh.mapper.RoomMapper">
+
+    <select id="queryCount" resultType="long" parameterType="com.fh.model.Room">
+        select count(*) from t_room
+    </select>
+
+    <select id="queryList" resultMap="hotelMap" parameterType="com.fh.model.Room">
+        select r.id 'id',t.roomTypeName 'roomTypeName',w.windowName 'windowName',
+        CONCAT(b.bedTypeCount,'张,',b.bedTypeWidth,',',b.bedTypeName) 'bebName',
+        td.describeName 'describeName',f.facilityName 'facilityName',
+        l.localName 'localName',r.price 'price',r.images 'images',ra.areaName 'areaName'
+        from t_room r LEFT JOIN t_roomtype t on r.`level` = t.roomTypeId
+        LEFT JOIN t_windows w on r.window = w.id
+        LEFT JOIN t_bedtype b on r.bed = b.bedTypeId
+        LEFT JOIN t_roomdescribe td on r.`describes` = td.id
+        LEFT JOIN t_facility f on r.facilities = f.id
+        LEFT JOIN t_roomlocal l on r.hotellocal = l.id
+        LEFT JOIN t_roomarea ra on r.area = ra.id
+    </select>
+
+    <resultMap id="hotelMap" type="map">
+        <result column="id" property="id"></result>
+        <result column="roomTypeName" property="roomTypeName"></result>
+        <result column="windowName" property="windowName"></result>
+        <result column="bebName" property="bebName"></result>
+        <result column="describeName" property="describeName"></result>
+        <result column="facilityName" property="facilityName"></result>
+        <result column="localName" property="localName"></result>
+        <result column="price" property="price"></result>
+        <result column="images" property="images"></result>
+        <result column="areaName" property="areaName"></result>
+    </resultMap>
+
+
+    <select id="getLevelList" resultType="com.fh.model.RoomLevel">
+        select * from t_roomtype
+    </select>
+
+
+    <select id="getWindowlList" resultType="com.fh.model.RoomWindow">
+        select * from t_windows
+    </select>
+
+    <select id="getBedlList" resultMap="bedMap">
+        select bedTypeId 'id',
+        CONCAT(bedTypeCount,'张,',bedTypeWidth,',',bedTypeName) 'bedType'
+        from t_bedtype
+    </select>
+
+    <resultMap id="bedMap" type="map">
+        <result column="id" property="id"></result>
+        <result column="bedType" property="bedType"></result>
+    </resultMap>
+
+    <select id="getArealList" resultMap="areaMap">
+        select id 'id', areaName 'areaName' from t_roomarea
+    </select>
+
+    <resultMap id="areaMap" type="map">
+        <result column="id" property="id"></result>
+        <result column="areaName" property="areaName"></result>
+    </resultMap>
+
+    <select id="getDescribelList" resultMap="describeMap">
+        select id 'id', describeName 'describeName' from t_roomdescribe
+    </select>
+
+    <resultMap id="describeMap" type="map">
+        <result column="id" property="id"></result>
+        <result column="describeName" property="describeName"></result>
+    </resultMap>
+
+
+    <select id="getFacilitylList" resultMap="facilityMap">
+        select id 'id', facilityName 'facilityName' from t_facility
+    </select>
+
+    <resultMap id="facilityMap" type="map">
+        <result column="id" property="id"></result>
+        <result column="facilityName" property="facilityName"></result>
+    </resultMap>
+
+    <select id="getLocallList" resultMap="localMap">
+        select id 'id', localName 'localName' from t_roomlocal
+    </select>
+
+    <resultMap id="localMap" type="map">
+        <result column="id" property="id"></result>
+        <result column="localName" property="localName"></result>
+    </resultMap>
+
+    <insert id="addRoom" parameterType="com.fh.model.Room">
+		insert into t_room(id,level,window,area,bed,price,describes,images,facilities,hotellocal)
+		values(#{id},#{level},#{window},#{area},#{bed},#{price},#{describes},#{images},#{facilities},#{hotellocal})
+	</insert>
+
+    <select id="toUpdate" parameterType="int" resultType="com.fh.model.Room">
+        select * from t_room where id = #{id}
+    </select>
+
+    <update id="updateRoom" parameterType="com.fh.model.Room">
+		update t_room set level=#{level},window=#{window},area=#{area},bed=#{bed},
+		price=#{price},describes=#{describes},images=#{images},facilities=#{facilities},hotellocal=#{hotellocal}
+		where id=#{id}
+	</update>
+
+    <delete id="deleteRoom" parameterType="int">
+		delete FROM t_room where id=#{id}
+	</delete>
+</mapper>
